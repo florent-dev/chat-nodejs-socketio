@@ -1,0 +1,56 @@
+<html>
+<head>
+    <title>Chat</title>
+    <meta name="author" content="Florent Dev" />
+    <meta name="description" content="Chat synchrone avec des websockets" />
+    <link href="chat-style.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Chat</h1>
+
+    <div class="chat">
+        <div class="chat-content"></div>
+        <div class="chat-features">
+            <form id="send_message">
+                <input id="input_message" type="text" placeholder="Message" />
+                <input id="send_message" type="submit" value="Envoyer" />
+            </form>
+        </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Connect to the server
+        let socket = io.connect('http://localhost:8888');
+
+        // Sharing its pseudo
+        function askingClientPseudo() {
+            var pseudo = prompt('Quel est votre pseudo ?');
+            socket.emit('SHARE_PSEUDO', pseudo);
+        }
+
+        // Event : server is asking/lost our pseudo
+        socket.on('NEED_PSEUDO', function() {
+            askingClientPseudo();
+        });
+
+        // Event : recv message
+        socket.on('SERVER_MSG', function(message) {
+            let style = (message.importance === 2) ? 'announcement' : '';
+            $('.chat-content').append('<div class="'+style+'">'+message.content+'</div>');
+        });
+
+        // Event : client submits message
+        $('#send_message').on('submit', function (e) {
+            e.preventDefault();
+            let inputMsg = $('#input_message');
+            let msg = inputMsg.val();
+            if (msg === '') return $('.chat-content').append('<div class="error">Vous devez renseigner un message.</div>');
+            socket.emit('CLIENT_MSG', msg);
+            inputMsg.val('');
+        })
+    </script>
+</body>
+</html>

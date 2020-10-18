@@ -1,0 +1,10 @@
+{
+  "name": "inkeox",
+  "version": "0.1.0",
+  "author": "Florent <florent.dev@hotmail.com>",
+  "description": "Chat node.js avec socket.io",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "socket.io": "^2.3.0"
+  }
+}
