@@ -19,7 +19,9 @@
     margin-bottom: 4px;
     height: 100%;
 }
+
 .chat-features {
+
 }
 
 #input_message {
@@ -30,7 +32,7 @@
     background: #fffaf2;
 }
 
-input#btn_envoyer {
+input#send_message {
     width: calc(100px - 5.5px);
     padding: 5px;
     border-width: 0;
